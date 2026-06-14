@@ -1,0 +1,30 @@
+name: ML Pipeline CI
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  check_working_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run training script
+      run: python train.py
+
+    - name: Run testing script
+      run: python test.py
