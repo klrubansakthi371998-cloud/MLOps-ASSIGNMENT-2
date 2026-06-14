@@ -2,16 +2,21 @@ import joblib
 from sklearn.datasets import fetch_olivetti_faces
 from sklearn.model_selection import train_test_split
 
-# Reload data to fetch the exact same test subset splits
-data = fetch_olivetti_faces()
-X, y = data.data, data.target
-_, X_test, _, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Retrieve the dataset to recreate the exact test environment
+dataset = fetch_olivetti_faces()
+features = dataset.data
+labels = dataset.target
 
-print("📂 Loading savedmodel.pth...")
-model = joblib.load('savedmodel.pth')
+# Maintain random_state=42 to guarantee we test on the correct 30% split
+_, X_eval, _, y_eval = train_test_split(features, labels, test_size=0.3, random_state=42)
 
-# Compute score
-accuracy = model.score(X_test, y_test)
-print("\n==============================")
-print(f"📊 Final Test Accuracy: {accuracy * 100:.2f}%")
-print("==============================")
+print("Initializing evaluation phase...")
+print("Loading 'savedmodel.pth' into memory...")
+clf = joblib.load('savedmodel.pth')
+
+# Calculate the final accuracy score
+model_accuracy = clf.score(X_eval, y_eval)
+
+print("----------------------------------------")
+print(f"Evaluation Successful | Accuracy Score: {model_accuracy * 100:.4f}%")
+print("----------------------------------------")

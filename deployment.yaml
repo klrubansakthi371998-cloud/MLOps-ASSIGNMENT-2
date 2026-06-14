@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-face-deployment
+  labels:
+    app: face-classifier
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: face-classifier
+  template:
+    metadata:
+      labels:
+        app: face-classifier
+    spec:
+      containers:
+      - name: face-inference-container
+        image: rubansakthi/olivetti-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

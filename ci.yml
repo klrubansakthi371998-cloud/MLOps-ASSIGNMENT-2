@@ -1,4 +1,4 @@
-name: ML Pipeline CI
+name: Automated MLOps Testing
 
 on:
   push:
@@ -10,21 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Fetch Repository Code
       uses: actions/checkout@v4
 
-    - name: Set up Python Environment
+    - name: Initialize Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Install Dependencies
+    - name: Install Required Libraries
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run training script
-      run: python train.py
+      run: |
+        python train.py
 
     - name: Run testing script
-      run: python test.py
+      run: |
+        python test.py
